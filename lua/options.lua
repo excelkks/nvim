@@ -1,0 +1,37 @@
+local opt = vim.opt
+
+opt.jumpoptions = 'stack'
+opt.clipboard = 'unnamedplus'
+opt.number = true
+opt.relativenumber = true
+opt.cursorline = true
+opt.colorcolumn = '80'
+opt.expandtab = true
+opt.tabstop = 2
+opt.shiftwidth = 0   -- 0 means the same as tabstop
+opt.softtabstop = 2
+opt.autoindent = true
+opt.cindent = true
+opt.scrolloff = 4
+opt.timeout = true
+opt.timeoutlen = 300
+opt.wrap = false
+opt.splitbelow = true
+opt.splitright = true
+opt.hlsearch = true
+opt.incsearch = false
+opt.ignorecase = true
+opt.smartcase = true
+opt.shortmess:append('mrwc')
+opt.laststatus = 3
+opt.virtualedit = 'block'
+opt.mouse = 'a'
+opt.cmdheight = 2
+opt.updatetime = 300
+opt.completeopt = { 'menu', 'menuone', 'noselect' }
+opt.termguicolors= true
+opt.swapfile = false
+opt.undofile = true
+opt.writebackup = false
+opt.signcolumn = "yes"
+opt.wildmode= { "longest:full", "full" }
