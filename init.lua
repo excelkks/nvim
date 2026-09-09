@@ -1,4 +1,6 @@
 require("options")
 require("keymaps")
 require("plugins")
+require("gitsigns-config")
+require("blink")
 require("lsp")
