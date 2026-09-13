@@ -34,6 +34,9 @@ require("gitsigns").setup({
     map("n", "<leader>gb", function()
       gs.blame_line({ full = true })
     end, "Blame line")
+    map("n", "<leader>gd", function()
+      gs.diffthis()
+    end, "Diff this file")
 
     map("v", "<leader>hs", function()
       gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })

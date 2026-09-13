@@ -1,32 +1,25 @@
 local keymap = vim.keymap.set
 
-local function noremap(mode, lhs, rhs)
-    local opts = { noremap = true }
+local function noremap(mode, lhs, rhs, extra)
+    local opts = vim.tbl_extend("force", { noremap = true }, extra or {})
     keymap(mode, lhs, rhs, opts)
 end
 
 local function wsplit(dir)
     vim.ui.input({ prompt = "split open: ", completion = "file" }, function(name)
         if name == nil then
-            return nil
+            return
+        end
+        if dir == "up" then
+            vim.cmd("aboveleft split " .. name)
+        elseif dir == "down" then
+            vim.cmd("belowright split " .. name)
+        elseif dir == "left" then
+            vim.cmd("leftabove vsplit " .. name)
+        elseif dir == "right" then
+            vim.cmd("rightbelow vsplit " .. name)
         else
-            if dir == "up" then
-                vim.opt.splitbelow = false
-                vim.cmd("split " .. name)
-                vim.opt.splitbelow = true
-            elseif dir == "down" then
-                vim.opt.splitbelow = true
-                vim.cmd("split " .. name)
-            elseif dir == "left" then
-                vim.opt.splitright = false
-                vim.cmd("vsplit " .. name)
-                vim.opt.splitright = true
-            elseif dir == "right" then
-                vim.opt.splitright = true
-                vim.cmd("vsplit " .. name)
-            else
-                error("invalid split directory " .. dir)
-            end
+            error("invalid split directory " .. dir)
         end
     end)
 end
@@ -36,17 +29,26 @@ noremap("", "<space>", "<Nop>")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-noremap("n", "<leader>w", "<cmd>w<CR>")
+noremap("n", "<leader>w", "<cmd>w<CR>", { silent = true })
 
 -- open init.lua
 local config_file = vim.fn.stdpath("config")
-noremap("n", "<leader>rc", ":e " .. config_file .. "<CR>")
+noremap("n", "<leader>rc", ":e " .. config_file .. "/init.lua<CR>", { silent = true })
+
+-- reload options & keymaps
+noremap("n", "<leader>rl", function()
+    package.loaded["options"] = nil
+    package.loaded["keymaps"] = nil
+    vim.cmd("luafile " .. config_file .. "/lua/options.lua")
+    vim.cmd("luafile " .. config_file .. "/lua/keymaps.lua")
+    vim.notify("options & keymaps reloaded", vim.log.levels.INFO)
+end, { desc = "Reload options & keymaps" })
 
 -- split window
-noremap("n", "sh", function() wsplit("left") end)
-noremap("n", "sj", function() wsplit("down") end)
-noremap("n", "sk", function() wsplit("up") end)
-noremap("n", "sl", function() wsplit("right") end)
+noremap("n", "<leader>sh", function() wsplit("left") end)
+noremap("n", "<leader>sj", function() wsplit("down") end)
+noremap("n", "<leader>sk", function() wsplit("up") end)
+noremap("n", "<leader>sl", function() wsplit("right") end)
 
 -- window navigation
 noremap("n", "<C-h>", "<C-w>h")

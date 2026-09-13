@@ -5,12 +5,13 @@ cmp.build():pwait()
 
 cmp.setup({
   keymap = {
-    preset = "default",
+    preset = "super-tab",
+    ["<CR>"] = { "accept", "fallback" },
   },
   appearance = {
     nerd_font_variant = "mono",
   },
   sources = {
-    default = { "lsp", "path", "snippets", "buffer" },
+    default = { "lsp", "path", "buffer" },
   },
 })
