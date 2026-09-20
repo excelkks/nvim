@@ -1,8 +1,9 @@
 -- Project tags: :Ctags generates .vscode/tags and wires it into 'tags'
 
--- Project root = nearest ancestor of the current buffer that is a git repo
--- (works even when nvim was launched from another directory). Fall back to
--- cwd, e.g. for non-git projects opened in place.
+-- Project root = outermost ancestor of the current buffer that is a git repo
+-- (works even when nvim was launched from another directory). Uses the same
+-- "outermost" rule as rooter.nvim so the two never disagree on nested repos.
+-- Fall back to cwd, e.g. for non-git projects opened in place.
 local function project_root()
   local bufname = vim.api.nvim_buf_get_name(0)
   local base
@@ -12,9 +13,10 @@ local function project_root()
     base = vim.fn.getcwd()
   end
   local dir = vim.fn.fnamemodify(base, ":p")
+  local found = nil
   while true do
     if vim.fn.isdirectory(dir .. "/.git") == 1 then
-      return dir
+      found = dir -- keep walking: outermost (highest) git ancestor wins
     end
     local parent = vim.fn.fnamemodify(dir, ":h")
     if parent == dir then
@@ -22,7 +24,7 @@ local function project_root()
     end
     dir = parent
   end
-  return vim.fn.getcwd()
+  return found or vim.fn.getcwd()
 end
 
 -- Point 'tags' at the current project's .vscode/tags (absolute path, so it works
@@ -85,4 +87,4 @@ vim.api.nvim_create_user_command("Ctags", function()
       end)
     end
   )
-end, { desc = "Generate tags into .vim/tags" })
+end, { desc = "Generate tags into .vscode/tags" })

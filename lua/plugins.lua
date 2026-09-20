@@ -6,10 +6,11 @@ vim.pack.add({
   "https://github.com/nvim-lua/plenary.nvim",
   "https://github.com/nvim-telescope/telescope.nvim",
   "https://github.com/wsdjeg/rooter.nvim",
+  "https://github.com/nvim-tree/nvim-tree.lua",
 })
 
 require("vscode").setup({
-    style = "dark",
+    style = "light",
     transparent = false,
 })
 

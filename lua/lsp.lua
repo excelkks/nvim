@@ -5,6 +5,7 @@ vim.lsp.config("clangd", {
 		"clangd",
 		"--background-index",
 		"--header-insertion=iwyu",
+		"--compile-commands-dir=.vscode",
 	},
 
 	filetypes = {

@@ -30,6 +30,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 noremap("n", "<leader>w", "<cmd>w<CR>", { silent = true })
+noremap("n", "<leader>q", "<cmd>q<CR>", { silent = true })
 
 -- open init.lua
 local config_file = vim.fn.stdpath("config")
@@ -69,7 +70,7 @@ noremap("i", "jk", "<ESC>")
 noremap("v", "<", "<gv")
 noremap("v", ">", ">gv")
 
--- Move test up and down
+-- Move text up and down
 noremap("v", "<A-j>", ":m .+1<CR>==")
 noremap("v", "<A-k>", ":m .-2<CR>==")
 noremap("v", "p", '"_dP')
@@ -98,6 +99,14 @@ noremap("c", "<C-e>", "<End>")
 noremap("c", "<C-p>", "<Up>")
 noremap("c", "<C-n>", "<Down>")
 noremap("c", "<C-k>", "<C-\\>e strpart(getcmdline(), 0, getcmdpos() - 1)<CR>")
+vim.api.nvim_create_user_command("Cmake", function()
+  vim.fn.feedkeys(
+    ":!cmake -S . -B mybuild -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ",
+    "n"
+  )
+end, {
+  desc = "Prepare CMake configure command",
+})
 
 -- resize window
 noremap("n", "<Up>", function() vim.cmd("resize +2") end)

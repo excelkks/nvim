@@ -7,7 +7,19 @@ local M = {}
 local matches = {}  -- keyword -> match id in the current window
 local keywords = {} -- ordered list of active keywords
 
-vim.api.nvim_set_hl(0, "HLWord", { bg = "#e5c07b", fg = "#282c34" })
+-- Derive HLWord from the active colorscheme so it stays consistent with the
+-- theme (instead of hardcoding One Dark colors that clash with vscode.dark).
+local function refresh_hl()
+  local visual = vim.api.nvim_get_hl(0, { name = "Visual", link = true })
+  local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = true })
+  vim.api.nvim_set_hl(0, "HLWord", {
+    bg = visual.bg or "#555555",
+    fg = normal.fg or "#ffffff",
+  })
+end
+refresh_hl()
+-- Re-derive if the user switches colorscheme at runtime
+vim.api.nvim_create_autocmd("ColorScheme", { callback = refresh_hl })
 
 local function escape_pattern(s)
   return vim.fn.escape(s, "\\/.*$^~[]")
