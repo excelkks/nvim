@@ -1,7 +1,10 @@
 vim.pack.add({
   "https://github.com/Mofiqul/vscode.nvim",
-  "https://github.com/Saghen/blink.lib",
-  "https://github.com/Saghen/blink.cmp",
+  {
+    src = "https://github.com/Saghen/blink.cmp",
+    -- Pin to stable v1 release line (v1.10.2) instead of main/v2-dev.
+    version = "v1.10.2",
+  },
   "https://github.com/lewis6991/gitsigns.nvim",
   "https://github.com/nvim-lua/plenary.nvim",
   "https://github.com/nvim-telescope/telescope.nvim",
